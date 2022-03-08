@@ -15,14 +15,15 @@ import java.util.Optional;
 @Service
 public class DataProcessor {
 
+    private static final Logger logger = LoggerFactory.getLogger(DataProcessor.class);
+
     List<LineListener> lineListeners;
 
-    private static final Logger log = LoggerFactory.getLogger(DataProcessor.class);
+    private final ObjectMapper mapper;
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
-    public DataProcessor(List<LineListener> lineListeners) {
+    public DataProcessor(List<LineListener> lineListeners, ObjectMapper mapper) {
         this.lineListeners = lineListeners;
+        this.mapper = mapper;
     }
 
     public void process(BufferedReader reader) {
@@ -35,15 +36,15 @@ public class DataProcessor {
                     });
             }
         } catch (IOException e) {
-            // TODO: add logging
+            logger.error("Error reading the line: {}", e.getMessage());
         }
     }
 
-    public static Optional<JsonNode> parseString(String str) {
+    private Optional<JsonNode> parseString(String str) {
         try {
             return Optional.ofNullable(mapper.readTree(str));
         } catch (JsonProcessingException e) {
-            log.error("Failed to parse string {} into JSON. Exception: {}", str, e.getMessage());
+            logger.error("Failed to parse string {} into JSON. Exception: {}", str, e.getMessage());
             return Optional.empty();
         }
     }

@@ -1,5 +1,7 @@
 package com.shulichenko.tool;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,8 @@ import java.io.IOException;
 @Component
 public class StartupApplicationRunner implements ApplicationRunner {
 
+    private static final Logger logger = LoggerFactory.getLogger(GraylogHttpForwarder.class);
+
     private final DataProcessor dataProcessor;
 
     public StartupApplicationRunner(DataProcessor dataProcessor) {
@@ -21,14 +25,12 @@ public class StartupApplicationRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         var nonOptionArgs = args.getNonOptionArgs();
         if (nonOptionArgs.isEmpty()) {
-            // TODO: add logging
-            System.out.println("Missing mandatory file path argument");
+            logger.error("Missing mandatory file path argument");
             System.exit(1);
         }
 
         if (nonOptionArgs.size() > 1) {
-            // TODO: add logging
-            System.out.println("Too many non-optional arguments");
+            logger.error("Too many non-optional arguments");
             System.exit(1);
         }
 
@@ -37,7 +39,7 @@ public class StartupApplicationRunner implements ApplicationRunner {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             dataProcessor.process(reader);
         } catch (IOException e) {
-            // TODO: add logging
+            logger.error("File read error: {}", e.getMessage());
         }
     }
 }
