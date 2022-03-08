@@ -1,5 +1,7 @@
 package com.shulichenko.tool;
 
+import com.shulichenko.tool.service.DataProcessor;
+import com.shulichenko.tool.service.GraylogForwarder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -13,7 +15,7 @@ import java.io.IOException;
 @Component
 public class StartupApplicationRunner implements ApplicationRunner {
 
-    private static final Logger logger = LoggerFactory.getLogger(GraylogHttpForwarder.class);
+    private static final Logger logger = LoggerFactory.getLogger(StartupApplicationRunner.class);
 
     private final DataProcessor dataProcessor;
 
@@ -35,11 +37,15 @@ public class StartupApplicationRunner implements ApplicationRunner {
         }
 
         var filePath = nonOptionArgs.get(0);
+        logger.info("Processing the file: {}", filePath);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             dataProcessor.process(reader);
         } catch (IOException e) {
             logger.error("File read error: {}", e.getMessage());
+            System.exit(1);
         }
+
+        logger.info("Processing finished");
     }
 }

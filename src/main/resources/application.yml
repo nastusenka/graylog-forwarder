@@ -1,5 +1,18 @@
-spring.main:
-  web-application-type: none
-  banner-mode: 'off'
-  log-startup-info: false
-logging.level.root: WARN
+spring:
+  main:
+    web-application-type: none
+    banner-mode: 'off'
+    log-startup-info: false
+  application:
+    name: graylog-forwarder
+
+logging:
+  level:
+    org.springframework: INFO
+
+graylog:
+  message:
+    version: 1.1
+    short_message: Message produced by GraylogForwarder
+  client:
+    url: http://192.168.99.100:12201/gelf

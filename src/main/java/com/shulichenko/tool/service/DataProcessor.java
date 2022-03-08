@@ -1,4 +1,4 @@
-package com.shulichenko.tool;
+package com.shulichenko.tool.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,8 +17,7 @@ public class DataProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(DataProcessor.class);
 
-    List<LineListener> lineListeners;
-
+    private final List<LineListener> lineListeners;
     private final ObjectMapper mapper;
 
     public DataProcessor(List<LineListener> lineListeners, ObjectMapper mapper) {
@@ -26,6 +25,11 @@ public class DataProcessor {
         this.mapper = mapper;
     }
 
+    /**
+     * Process complete input data represented by BufferedReader
+     *
+     * @param reader
+     */
     public void process(BufferedReader reader) {
         try {
             String line;
