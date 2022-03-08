@@ -48,7 +48,7 @@ public class DataProcessor {
         try {
             return Optional.ofNullable(mapper.readTree(str));
         } catch (JsonProcessingException e) {
-            logger.error("Failed to parse string {} into JSON. Exception: {}", str, e.getMessage());
+            logger.error("Failed to parse string \"{}\" into JSON. Exception: {}", str, e.getMessage());
             return Optional.empty();
         }
     }

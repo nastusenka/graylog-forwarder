@@ -1,7 +1,6 @@
 package com.shulichenko.tool;
 
 import com.shulichenko.tool.service.DataProcessor;
-import com.shulichenko.tool.service.GraylogForwarder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -25,6 +24,7 @@ public class StartupApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        // TODO: provide hints for user about the application usage
         var nonOptionArgs = args.getNonOptionArgs();
         if (nonOptionArgs.isEmpty()) {
             logger.error("Missing mandatory file path argument");
