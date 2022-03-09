@@ -14,6 +14,8 @@ import java.io.IOException;
 @Component
 public class StartupApplicationRunner implements ApplicationRunner {
 
+    private static final String HELP_MESSAGE = "Program usage: java -jar graylog-forwarder-1.0-SNAPSHOT.jar /path/to/file";
+
     private static final Logger logger = LoggerFactory.getLogger(StartupApplicationRunner.class);
 
     private final DataProcessor dataProcessor;
@@ -24,15 +26,14 @@ public class StartupApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        // TODO: provide hints for user about the application usage
         var nonOptionArgs = args.getNonOptionArgs();
         if (nonOptionArgs.isEmpty()) {
-            logger.error("Missing mandatory file path argument");
+            logger.error("Missing mandatory file path argument. " + HELP_MESSAGE);
             System.exit(1);
         }
 
         if (nonOptionArgs.size() > 1) {
-            logger.error("Too many non-optional arguments");
+            logger.error("Too many non-optional arguments. " + HELP_MESSAGE);
             System.exit(1);
         }
 
